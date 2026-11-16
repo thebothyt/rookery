@@ -24,3 +24,7 @@ Also missing: clocks, repetition and 50-move draws.
 - Every finished game can be reviewed: each move is analysed by the built-in engine (`public/engine.js`,
   run in `public/worker.js`) and graded best/good/inaccuracy/mistake/blunder, with accuracy, an eval graph
   and the engine's preferred move. It is a shallow engine, so treat it as a guide.
+
+## Sound
+All sounds are synthesised in the browser with the Web Audio API (no audio files). Moves, captures, castling,
+check, game start, match found, and win/loss/draw each have their own sound; the speaker button in the header mutes them.
