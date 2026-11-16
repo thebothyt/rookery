@@ -1,24 +1,19 @@
 # Rookery
 
-Responsive chess with five bots and live multiplayer. Guests play instantly — no sign-in.
-A rookery is a colony of rooks. Original design, original name, Unicode piece glyphs (no third-party assets).
-
-## Run
-```
-npm install
-npm run dev      # http://localhost:8787
-npm run deploy   # Cloudflare Workers
-```
+Responsive chess with five bots and live multiplayer. Guests play instantly, no sign-in.
+Original design, name and piece artwork.
 
 ## Hosting
-- **Cloudflare Workers (recommended):** serves the site and the realtime rooms (Durable Objects + WebSockets).
-- **Vercel:** Vercel can't hold WebSocket connections. Deploy `public/` there if you like, deploy the Worker
-  too, and set `window.WS_BASE` in `public/config.js` to the Worker URL.
+It's a static site (`public/`), so it deploys anywhere: **Vercel** (set the output directory to `public`),
+**Cloudflare Workers** (`npm run deploy`), Netlify, GitHub Pages.
 
-## How multiplayer works
-Guests get a random id stored in `localStorage` (this also lets them reconnect to a game). `Find opponent`
-pairs two players through the Lobby object; `Invite a friend` makes a link like `/#r=abc123`.
-The server enforces turn order and stores the move list; clients validate move legality.
+## Multiplayer
+Games run peer-to-peer over WebRTC using PeerJS (vendored in `public/peerjs.min.js`), so there is no
+server to run. Players are matched through PeerJS's free public signaling service.
+- **Find an opponent:** searches for another waiting player.
+- **Invite a friend:** creates a link like `/#r=abc123`; the host's tab must stay open.
+- Both browsers validate every move.
 
-## Known gaps
-Auto-queen promotion, no clocks, no repetition/50-move draws, server doesn't validate move legality.
+Limits: no TURN relay, so a few strict networks (some mobile carriers, corporate Wi-Fi) can't connect.
+For production reliability, add a TURN server in `OPT` in `index.html`, or run your own PeerJS server.
+Also missing: clocks, repetition and 50-move draws.
